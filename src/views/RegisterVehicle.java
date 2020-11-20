@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import application.Main;
 import controller.StatuController;
+import controller.VehicleController;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -196,25 +197,23 @@ public class RegisterVehicle extends JFrame {
 		 JButton submit = new JButton("Ingresar Vehiculo");
 		 submit.addActionListener(e -> createNewVehicle());
 
-		 JButton edit = new JButton("Editar Vehiculo");
-		 edit.addActionListener(e -> editVehicle());
-
 			
 		 panelBotones.add(submit);
-		 panelBotones.add(edit);
 		 cp.add(panelBotones, BorderLayout.SOUTH);
 		
 	}
-	private JPanel toPanel(JTextField field, String title) {
-		JPanel panel = new JPanel(new BorderLayout());
-		panel.setMinimumSize(new Dimension(10, 20));
-		panel.add(new JLabel(title), BorderLayout.PAGE_START);
-		panel.add(field, BorderLayout.PAGE_END);
-
-		return panel;
-	}
+	
 	private void searchVehicle() {
-		
+		System.out.println(tplaque.getText());
+		VehicleController.getInstance().fetchNextById(tplaque.getText());
+		try {
+			   Thread.sleep(3*1000);
+		}
+		catch (Exception e) {
+			   System.out.println(e);
+		}
+		ArrayList<Vehicle> vehicle = new ArrayList<>();
+		vehicle = VehicleController.getInstance().getVehicles();
 	}
 	private void createNewVehicle() {
 		// form vehicle
@@ -268,52 +267,6 @@ public class RegisterVehicle extends JFrame {
 	}
 
 
-	private void editVehicle() {
-		/*if (empId.getText() == null || empId.getText().isEmpty()) {
-			Main.getMainInstance().setStatus("Specify employee id");
-			return;
-		}
-
-		Employee data = new Employee();
-		if (notEmpty(employeeName)) {
-			data.setEname(employeeName.getText());
-		}
-
-		if (notEmpty(employeeDept)) {
-			data.setDeptno(Long.parseLong(employeeDept.getText()));
-		}
-
-		// do for other attributes
-
-		ServiceGenerator.createService(RestEndpoint.class).editEmployee(data, Long.parseLong(empId.getText()))
-				.enqueue(new Callback<Void>() {
-					@Override
-					public void onResponse(Call<Void> call, Response<Void> response) {
-						if (response.isSuccessful()) {
-							Main.getMainInstance().setStatus("Edited employee successfully!");
-						} else {
-							Main.getMainInstance().setStatus("Couldn't edit employee");
-						}
-					}
-
-					@Override
-					public void onFailure(Call<Void> call, Throwable t) {
-						Main.getMainInstance().setStatus("Retry");
-					}
-				});*/
-	}
-/*
-	private boolean notEmpty(JTextField field) {
-		return field.getText() != null && !field.getText().isEmpty();
-	}
-*/
-	/*
-	public static JTextField getEmpId() {
-		return compId;
-	}*/
-
-	public void setEmpId(JTextField compId) {
-	//	this.empId = empId;
-	}
+	
 
 }

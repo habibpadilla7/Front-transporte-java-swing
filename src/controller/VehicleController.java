@@ -2,11 +2,8 @@ package controller;
 
 import java.util.ArrayList;
 
-import Repository.RestEndpoint;
-import View.Terminal;
 import application.Main;
 import model.Vehicle;
-import modell.EmployeesData.DataResponse;
 import repository.RestEndPoint;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,15 +67,15 @@ public class VehicleController {
 		});
 		return vehicles;
 	}
-	public void fetchNextById() {
+	public void fetchNextById(String vehId) {
 		
 		ServiceGenerator.createService(RestEndPoint.class)
-				.GetVehicleById(String.parseString(Terminal.getVehId().getText())).enqueue(new Callback<DataResponse>() {
+				.GetVehicleById(vehId).enqueue(new Callback<DataResponse>() {
 					@Override
 					public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
 						if (response.isSuccessful()) {
 							vehicles.addAll(response.body().getData());
-						}
+						} 
 					}
 
 					@Override

@@ -56,6 +56,6 @@ public interface RestEndPoint {
 	Call<List<Vehicle>> getVehicless();
 	
 	@GET("vehiculos/{vehId}")
-	Call<VehicleController.DataResponse> GetVehicleById(@Path("vehId") int vehId);
+	Call<VehicleController.DataResponse> GetVehicleById(@Path("vehId") String vehId);
 	
 }
