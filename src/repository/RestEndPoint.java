@@ -58,4 +58,7 @@ public interface RestEndPoint {
 	@GET("vehiculos/{vehId}")
 	Call<VehicleController.DataResponse> GetVehicleById(@Path("vehId") String vehId);
 	
+	@PUT("vehiculos/{vehId}")
+	Call<Void> editVehicle(@Body Vehicle vehicle, @Path("vehId") int vehId);
+	
 }

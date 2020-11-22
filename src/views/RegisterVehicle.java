@@ -33,6 +33,8 @@ public class RegisterVehicle extends JFrame {
 	private JTextField tnumberDoors;
 	private JTextField tbrand;
 	private JTextField tline;
+	private JTextField tcompany;
+	private JTextField tid;
 	private JComboBox cstate;
 	
 	private JLabel lplaque;
@@ -47,6 +49,12 @@ public class RegisterVehicle extends JFrame {
 	private JLabel lgrossWeight;
 	private JLabel lline;
 	private JLabel lstate;
+	private JButton submit;
+	private JButton edit;
+	
+	public void CloseJframe() {
+		super.dispose();
+	}
 	
 	public RegisterVehicle() {
 		
@@ -148,6 +156,15 @@ public class RegisterVehicle extends JFrame {
 		 tnumberDoors.setBounds(247, 430, 286, 30);
 		 panelDatos.add(tnumberDoors);
 		 
+		 tcompany = new JTextField();
+		 tcompany.setText(""+Main.getMainInstance().getCompany_id());
+		 panelDatos.add(tcompany);
+		 tcompany.setVisible(false);
+		 
+		 tid = new JTextField();
+		 panelDatos.add(tcompany);
+		 tid.setVisible(false);
+
 	     lbrand =new JLabel("Marca");
 	     lbrand.setFont(new java.awt.Font("Tahoma", 0, 16)); 
 		 lbrand.setBounds(50,470,250,30);
@@ -178,6 +195,7 @@ public class RegisterVehicle extends JFrame {
 			   System.out.println(e);
 		}
 		 DefaultComboBoxModel model = new DefaultComboBoxModel();
+		 model.addElement("Seleccione el estado del vehiculo");
 		 for (Statu pruebo : sta) {
 				Object[] o = new Object[2];
 				o[0] = pruebo.getId();
@@ -194,17 +212,22 @@ public class RegisterVehicle extends JFrame {
 		 
 		 JPanel panelBotones = new JPanel();
 		 panelBotones.setLayout(new FlowLayout());
-		 JButton submit = new JButton("Ingresar Vehiculo");
+		 submit = new JButton("Ingresar Vehiculo");
 		 submit.addActionListener(e -> createNewVehicle());
+		 
+		 edit = new JButton("Actualizar Vehiculo");
+		 edit.addActionListener(e -> EditVehicle());
+		 edit.setVisible(false);
 
 			
 		 panelBotones.add(submit);
+		 panelBotones.add(edit);
 		 cp.add(panelBotones, BorderLayout.SOUTH);
 		
 	}
 	
 	private void searchVehicle() {
-		System.out.println(tplaque.getText());
+		
 		VehicleController.getInstance().fetchNextById(tplaque.getText());
 		try {
 			   Thread.sleep(3*1000);
@@ -214,6 +237,77 @@ public class RegisterVehicle extends JFrame {
 		}
 		ArrayList<Vehicle> vehicle = new ArrayList<>();
 		vehicle = VehicleController.getInstance().getVehicles();
+
+		tmotor.setText(""+vehicle.get(0).getMotor());
+		tmotor.disable();
+		cstate.setSelectedIndex(vehicle.get(0).getState_id());
+		tchassis.setText(vehicle.get(0).getChassis());
+		tchassis.disable();
+		tmodel.setText(vehicle.get(0).getModel());
+		tmodel.disable();
+		tregistrationDate.setText(vehicle.get(0).getRegistrationDate());
+		tregistrationDate.disable();
+		tseatedPassengers.setText(""+vehicle.get(0).getSeatedPassengers());
+		tseatedPassengers.disable();
+		tstandingPassengers.setText(""+vehicle.get(0).getStandingPassengers());
+		tstandingPassengers.disable();
+		tweight.setText(vehicle.get(0).getWeight());
+		tweight.disable();
+		tdry.setText(vehicle.get(0).getDry());
+		tdry.disable();
+		tgrossWeight.setText(vehicle.get(0).getGrossWeight());
+		tgrossWeight.disable();
+		tnumberDoors.setText(""+vehicle.get(0).getNumberDoors());
+		tnumberDoors.disable();
+		tbrand.setText(vehicle.get(0).getBrand());
+		tbrand.disable();
+		tline.setText(vehicle.get(0).getLine());
+		tline.disable();
+		tcompany.setText(""+vehicle.get(0).getCompany_id());
+		tid.setText(""+vehicle.get(0).getId());
+		submit.setVisible(false);
+		edit.setVisible(true);
+		
+	}
+	private void EditVehicle() {
+		// form vehicle
+		
+		Vehicle vehicle = new Vehicle();
+		vehicle.setPlaque(tplaque.getText());
+		vehicle.setMotor(tmotor.getText());
+		vehicle.setState_id(cstate.getSelectedIndex());
+		vehicle.setChassis(tchassis.getText());
+		vehicle.setModel(tmodel.getText());
+		vehicle.setRegistrationDate(tregistrationDate.getText());
+		vehicle.setSeatedPassengers(Integer.parseInt(tseatedPassengers.getText()));
+		vehicle.setStandingPassengers(Integer.parseInt(tstandingPassengers.getText()));
+		vehicle.setWeight(tweight.getText());
+		vehicle.setDry(tdry.getText());
+		vehicle.setGrossWeight(tgrossWeight.getText());
+		vehicle.setNumberDoors(Integer.parseInt(tnumberDoors.getText()));
+		vehicle.setBrand(tbrand.getText());
+		vehicle.setLine(tline.getText());
+		vehicle.setCompany_id(Integer.parseInt(tcompany.getText()));
+		System.out.println(tplaque.getText()+"   "+tmotor.getText()+"   "+cstate.getSelectedIndex()+"   "+tchassis.getText()+"   "+tmodel.getText()+"   "+tregistrationDate.getText()+"   "+tseatedPassengers.getText()+"   "+tstandingPassengers.getText()+"   "+tweight.getText()+"   "+tdry.getText()+"   "+tgrossWeight.getText()+"   "+tnumberDoors.getText()+"   "+tbrand.getText()+"   "+tline.getText());
+		
+		ServiceGenerator.createService(RestEndPoint.class).editVehicle(vehicle, Integer.parseInt(tid.getText()))
+		.enqueue(new Callback<Void>() {
+			@Override
+			public void onResponse(Call<Void> call, Response<Void> response) {
+				if (response.isSuccessful()) {
+					JOptionPane.showMessageDialog(null, "Vehiculo fue Actualizado con exito");
+					CloseJframe();
+					
+				} else {
+					JOptionPane.showMessageDialog(null, "Falla en la actualizacion del vehiculo");
+				}
+			}
+
+			@Override
+			public void onFailure(Call<Void> call, Throwable t) {
+				JOptionPane.showMessageDialog(null, "porfavor intentelo de nuevo");
+			}
+		});
 	}
 	private void createNewVehicle() {
 		// form vehicle
@@ -241,19 +335,7 @@ public class RegisterVehicle extends JFrame {
 			public void onResponse(Call<Void> call, Response<Void> response) {
 				if (response.isSuccessful()) {
 					JOptionPane.showMessageDialog(null, "Vehiculo fue creada con exito");
-					tplaque.setText("");
-					tmotor.setText("");
-					tchassis.setText("");
-					tmodel.setText("");
-					tregistrationDate.setText("");
-					tseatedPassengers.setText("");
-					tstandingPassengers.setText("");
-					tweight.setText("");
-					tdry.setText("");
-					tgrossWeight.setText("");
-					tnumberDoors.setText("");
-					tbrand.setText("");
-					tline.setText("");
+					CloseJframe();
 				} else {
 					JOptionPane.showMessageDialog(null, "Falla en la creacion del vehiculo");
 				}

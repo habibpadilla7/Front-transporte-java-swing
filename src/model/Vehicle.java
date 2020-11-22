@@ -2,6 +2,7 @@ package model;
 
 
 public class Vehicle {
+	private int id;
 	private String plaque;
 	private String motor;
 	private String chassis;
@@ -18,6 +19,12 @@ public class Vehicle {
 	private int state_id;
 	private int company_id;
 	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public int getCompany_id() {
 		return company_id;
 	}

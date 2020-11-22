@@ -36,6 +36,10 @@ public class RegisterCompany extends JFrame {
 	private JTextField ttelefonol;
 	private JComboBox tdi,tdil;
 	
+	public void CloseJframe() {
+		super.dispose();
+	}
+	
 	public RegisterCompany() {
 		
 		 super("Registrar Empresa de transporte");
@@ -240,20 +244,7 @@ public class RegisterCompany extends JFrame {
 			public void onResponse(Call<Void> call, Response<Void> response) {
 				if (response.isSuccessful()) {
 					JOptionPane.showMessageDialog(null, "Compañia fue creada con exito");
-					ndi.setText("");
-					tnombre.setText("");
-					tdireccion.setText("");
-					tciudad.setText("");
-					tdepartamento.setText("");
-					tpais.setText("");
-					ttelefono.setText("");
-					ndil.setText("");
-					tnombrel.setText("");
-					tdireccionl.setText("");
-					tciudadl.setText("");
-					tdepartamentol.setText("");
-					tpaisl.setText("");
-					ttelefonol.setText("");					
+					CloseJframe();				
 				} else {
 					JOptionPane.showMessageDialog(null, "Compañia no fue creada");
 				}

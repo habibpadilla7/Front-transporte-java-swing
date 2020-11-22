@@ -31,6 +31,9 @@ public class RegisterDriver extends JFrame {
 	private JLabel ltdi;
 	private JLabel lndi;
 	
+	public void CloseJframe() {
+		super.dispose();
+	}
 	
 	public RegisterDriver() {
 		super("Registrar Conductor");
@@ -166,13 +169,7 @@ public class RegisterDriver extends JFrame {
 			public void onResponse(Call<Void> call, Response<Void> response) {
 				if (response.isSuccessful()) {
 					JOptionPane.showMessageDialog(null, "Conductor fue creada con exito");
-					ndi.setText("");
-					tnombre.setText("");
-					tdireccion.setText("");
-					tciudad.setText("");
-					tdepartamento.setText("");
-					tpais.setText("");
-					ttelefono.setText("");
+					CloseJframe();
 				} else {
 					JOptionPane.showMessageDialog(null, "Falla en la creacion de conductor");
 				}

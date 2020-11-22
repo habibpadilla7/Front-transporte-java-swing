@@ -68,18 +68,17 @@ public class VehicleController {
 		return vehicles;
 	}
 	public void fetchNextById(String vehId) {
-		
 		ServiceGenerator.createService(RestEndPoint.class)
 				.GetVehicleById(vehId).enqueue(new Callback<DataResponse>() {
 					@Override
 					public void onResponse(Call<DataResponse> call, Response<DataResponse> response) {
-						if (response.isSuccessful()) {
-							vehicles.addAll(response.body().getData());
-						} 
+						System.out.println(response.body().getData());
+						vehicles.addAll(response.body().getData());
 					}
 
 					@Override
 					public void onFailure(Call<DataResponse> call, Throwable t) {
+						System.out.println("problema en la conexion");
 						
 					}
 				});

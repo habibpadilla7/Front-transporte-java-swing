@@ -26,17 +26,18 @@ public class Console extends JPanel {
 	}
 
 	public void updateConsole() {
-		ArrayList<Company> employees = CompanyController.getInstance().getCompanys();
-		Object[] columnNames = { "Deptno", "Empno", "Name","Hiredate","Job","Management","Salary"};
+		ArrayList<Company> companys = CompanyController.getInstance().getCompanys();
+		Object[] columnNames = { "Placa", "Tipo Identificacion Empresa", "N° Identificacion Empresa", "Nombre Empresa", "Cantidad Conductores vinculados al vehiculo"};
 		 model = new DefaultTableModel(new Object[0][0], columnNames);
 		StringBuilder builder = new StringBuilder();
-		for (Company employee : employees) {
-			//builder.append(employee.toString());
+		for (Company company : companys) {
+			//builder.append(company.toString());
 
 			Object[] o = new Object[7];
-			o[0] = employee.getAddress();
-			o[1] = employee.getCity();
-			o[2] = employee.getName();
+			o[1] = company.getTypeIdentification();
+			o[2] = company.getNumberIdentification();
+			o[3] = company.getName();
+			
 			model.addRow(o);
 
 			
